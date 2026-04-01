@@ -83,8 +83,12 @@ def _initial(given):
     return given[0].lower() if given else ''
 
 
-def author_similarity(bib_authors, api_authors):
+def author_similarity(bib_authors, api_authors, bib_truncated=False):
     """Compare author lists.
+
+    If bib_truncated is True (the bib used "and others" / "et al."),
+    scoring checks that bib authors are a subset of API authors rather
+    than penalizing for missing co-authors.
 
     Returns dict with:
         score: float 0-1
@@ -127,9 +131,14 @@ def author_similarity(bib_authors, api_authors):
     missing_in_bib = [api_authors[i] for i in unmatched_api]
     extra_in_bib = [bib_authors[i] for i in unmatched_bib]
 
-    # Score: proportion of matched authors relative to the larger list
-    max_count = max(len(bib_authors), len(api_authors))
-    score = len(matched) / max_count if max_count > 0 else 0.0
+    if bib_truncated:
+        # Truncated list ("et al."): score by how many bib authors were found
+        # in the API results. Missing API authors are expected, not penalized.
+        score = len(matched) / len(bib_authors) if bib_authors else 0.0
+    else:
+        # Full list: score relative to the larger list
+        max_count = max(len(bib_authors), len(api_authors))
+        score = len(matched) / max_count if max_count > 0 else 0.0
 
     return {
         'score': score,
@@ -209,7 +218,9 @@ def compute_overall_match(bib_entry, api_result):
     }
 
     # Authors
-    a_result = author_similarity(bib_entry.get('authors', []), api_result.get('authors', []))
+    bib_truncated = bib_entry.get('authors_truncated', False)
+    a_result = author_similarity(bib_entry.get('authors', []), api_result.get('authors', []),
+                                 bib_truncated=bib_truncated)
     fields['authors'] = {
         'score': round(a_result['score'], 3),
         'status': 'match' if a_result['score'] >= 0.70 else 'mismatch',

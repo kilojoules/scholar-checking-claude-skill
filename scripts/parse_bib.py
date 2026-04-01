@@ -91,21 +91,23 @@ def parse_authors(author_string):
     """Parse BibTeX author string into structured list.
 
     Input: "Last, First and Last, First and others"
-    Output: [{"family": "Last", "given": "First"}, ...]
+    Output: (authors_list, truncated_bool)
     """
     if not author_string:
-        return []
+        return [], False
 
     cleaned = clean_latex(author_string)
     # Split on " and " (case-insensitive)
     parts = re.split(r'\s+and\s+', cleaned, flags=re.IGNORECASE)
 
     authors = []
+    truncated = False
     for part in parts:
         part = part.strip()
         if not part:
             continue
         if part.lower() in ('others', 'et al.', 'et al', '{others}'):
+            truncated = True
             continue
 
         if ',' in part:
@@ -125,7 +127,7 @@ def parse_authors(author_string):
 
         authors.append({'family': family, 'given': given})
 
-    return authors
+    return authors, truncated
 
 
 def extract_arxiv_id(entry):
@@ -228,7 +230,7 @@ def parse_bib_file(filepath):
         title_raw = entry.get('title', '')
         title_clean = clean_latex(title_raw)
         author_raw = entry.get('author', '')
-        authors = parse_authors(author_raw)
+        authors, authors_truncated = parse_authors(author_raw)
 
         year_str = entry.get('year', '')
         year = None
@@ -246,6 +248,7 @@ def parse_bib_file(filepath):
             'title': title_clean,
             'title_raw': title_raw,
             'authors': authors,
+            'authors_truncated': authors_truncated,
             'author_raw': author_raw,
             'year': year,
             'venue': venue_clean,
