@@ -1,0 +1,12 @@
+{
+  "name": "scholar-checking",
+  "version": "0.1.0",
+  "description": "Verify BibTeX citations against academic databases (CrossRef, OpenAlex, Semantic Scholar, arXiv, DBLP). No API keys required.",
+  "author": {
+    "name": "Julian Quick",
+    "url": "https://github.com/kilojoules"
+  },
+  "repository": "https://github.com/kilojoules/scholar-checking-claude-skill",
+  "license": "MIT",
+  "keywords": ["academic", "bibtex", "citations", "verification", "references", "latex", "bibliography"]
+}

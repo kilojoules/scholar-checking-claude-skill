@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "kilojoules-scholar-checking",
+  "description": "Verify BibTeX citations against academic databases to catch hallucinated or incorrect references",
+  "owner": {
+    "name": "Julian Quick",
+    "email": "julian@example.com"
+  },
+  "plugins": [
+    {
+      "name": "scholar-checking",
+      "description": "Verify BibTeX citations against CrossRef, OpenAlex, Semantic Scholar, arXiv, and DBLP. Checks title, authors, year, venue, DOI, and arXiv ID.",
+      "source": "./",
+      "category": "productivity",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": ["academic", "bibtex", "citations", "verification", "references", "latex"]
+    }
+  ]
+}
