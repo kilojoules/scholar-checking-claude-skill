@@ -32,10 +32,10 @@ Also check for flags in `$ARGUMENTS`:
 Run the verification script via Bash:
 
 ```
-python3 PLUGIN_DIR/scripts/verify_bib.py "<bib_file_path>" --verbose
+python3 "${CLAUDE_PLUGIN_ROOT}/scripts/verify_bib.py" "<bib_file_path>" --verbose
 ```
 
-Replace `PLUGIN_DIR` with the absolute path to this plugin's root directory (two levels up from this SKILL.md file — determine this by checking where this skill file is located using the Glob tool to find `**/skills/check-refs/SKILL.md` and deriving the plugin root).
+`${CLAUDE_PLUGIN_ROOT}` is set by Claude Code to the absolute path of this plugin's root directory.
 
 For large .bib files (50+ entries), add `--batch-delay 1.0` to be conservative with rate limits.
 

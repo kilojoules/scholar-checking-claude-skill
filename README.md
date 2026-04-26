@@ -27,14 +27,18 @@ No API keys required. All APIs are queried at their free tier rate limits.
 
 ## Installation
 
-```
-/install kilojoules-scholar-checking
-```
-
-Or for local development:
+Add the marketplace, then install the plugin:
 
 ```
-claude --plugin-dir /path/to/scholar-checking-claude-skill
+/plugin marketplace add kilojoules/scholar-checking-claude-skill
+/plugin install scholar-checking@kilojoules-scholar-checking
+```
+
+Or for local development, point Claude Code at a local clone:
+
+```
+/plugin marketplace add /path/to/scholar-checking-claude-skill
+/plugin install scholar-checking@kilojoules-scholar-checking
 ```
 
 ## Usage
